@@ -150,13 +150,6 @@ REST_FRAMEWORK = {
 }
 
 
-# environment variables -> django-dotenv -> reads .env
-ALGOLIA = {
-    'APPLICATION_ID' : '5AYN1LB7QY',
-    'API_KEY' : '0926f2c512994824083528ca04a092c5',
-    'INDEX_PREFIX' : 'cfe'
-}
-
 SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ["Bearer"],
     "ACCESS_TOKEN_LIFETIME": datetime.timedelta(seconds=30),
