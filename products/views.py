@@ -7,7 +7,7 @@ from api.permissions import IsStaffEditorPermission
 # from django.http import http404
 from django.shortcuts import get_object_or_404
 from api.authentication import TokenAuthentication
-from api.mixins import StaffEditorPermissionMixin
+from api.mixins import (StaffEditorPermissionMixin, UserQuerysetMixin)
 
 class ProductCreateAPIView(generics.CreateAPIView,StaffEditorPermissionMixin):
     queryset = Product.objects.all()
@@ -22,7 +22,7 @@ class ProductCreateAPIView(generics.CreateAPIView,StaffEditorPermissionMixin):
         content = serializer.validated_data.get('content') or None
         if content is None:
             content = title
-        serializer.save(content=content)
+        serializer.save(user=self.request.user,content=content)
 
 product_create_view = ProductCreateAPIView.as_view()
 
@@ -40,11 +40,27 @@ class ProductDetailAPIView(generics.ListAPIView,StaffEditorPermissionMixin):
 product_list_detail_view = ProductDetailAPIView.as_view()
 
 
-class ProductListCreateAPIView(StaffEditorPermissionMixin,generics.ListCreateAPIView):
+class ProductListCreateAPIView(StaffEditorPermissionMixin,
+                               UserQuerysetMixin,
+                               generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     # authentication_classes = [authentication.SessionAuthentication, TokenAuthentication]
     # permission_classes = [permissions.IsAdminUser, IsStaffEditorPermission]
+    def perform_create(self, serializer):
+        title = serializer.validated_data.get('title')
+        content = serializer.validated_data.get('content') or None
+        if content is None:
+            content = title
+        serializer.save(content=content)
+    # def get_queryset(self,*args,**kwargs):
+    #     qs = super().get_queryset(*args,**kwargs)
+    #     request = self.request
+    #     user = request.user
+    #     if not user.is_authenticated:
+    #         return Product.objects.none()
+    #     print(request.user)
+    #     return qs.filter(user=request.user)
 
 product_list_create_view = ProductListCreateAPIView.as_view()
 

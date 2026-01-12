@@ -10,7 +10,7 @@ get_response = requests.post(endpoint,json = {"title":"Hello World"}) # HTTP req
 # 1.HTTP request will give HTML response
 # 2.A REST API HTTP Request will give JSON response
 
-# JavaScript Object Notation ~ A python Dict
+# JavaScript objects Notation ~ A python Dict
 
 print(get_response.json())
 
