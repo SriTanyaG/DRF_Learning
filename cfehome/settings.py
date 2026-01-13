@@ -26,8 +26,9 @@ SECRET_KEY = 'django-insecure-6&xtgejc22b+9a5-q60(a9h3hd@v_8_uvacq6ug31r#*2^7s^$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = [
+    
+]
 
 # Application definition
 
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # third party api services
     'algoliasearch_django',
+    'corsheaders',
 
     # internal apps
     'api',
@@ -56,6 +58,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -65,6 +68,15 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'cfehome.urls'
 
+CORS_URLS_REGEX = r'^/api/.*'
+
+CORS_ALLOWED_ORIGINS = []
+
+if DEBUG:
+    CORS_ALLOWED_ORIGINS += [
+        'http://localhost:811',
+        'https://localhost:811',
+    ]
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
